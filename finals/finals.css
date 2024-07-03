@@ -1,0 +1,290 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" c<!ontent="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #20faad;
+        }
+        .dashboard {
+            width: 80%;
+            height: 80%;
+            display: flex;
+            border: none;
+            box-shadow: none;
+            background-color: transparent;
+        }
+        .sidebar {
+            width: 200px;
+            border-right: 1px solid #ccc;
+            padding-right: 10px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: bisque;
+            color: rgb(4, 0, 0);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .sidebar ul li button:hover {
+            background-color: #ff30ba;
+        }
+        .content {
+            flex-grow: 1;
+            padding-left: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form div {
+            margin-bottom: 10px;
+        }
+        label {
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 100%;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            background-color: bisque;
+            color: rgb(4, 0, 0);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff30ba;
+        }
+        #productList {
+            margin-top: 20px;
+        }
+        #productList ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #productList ul li {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #productList ul li img {
+            max-width: 100px;
+            max-height: 100px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard" id="dashboard">
+    <div class="sidebar">
+        <h3>Menu</h3>
+        <ul>
+            <li><button onclick="showContent('add')">Add Item</button></li>
+            <li><button onclick="showContent('edit')">Edit Item</button></li>
+            <li><button onclick="showContent('delete')">Delete Item</button></li>
+        </ul>
+    </div>
+    <div class="content" id="content">
+        <h2>Welcome to the Dashboard</h2>
+        <p>Select an option from the menu to get started.</p>
+    </div>
+</div>
+
+<script>
+    const products = [];
+    const defaultImage = 'download.jpg';
+
+    function showContent(action) {
+        const content = document.getElementById('content');
+        if (action === 'add') {
+            content.innerHTML = `
+                <h2>Add Item</h2>
+                <form id="addItemForm">
+                    <div>
+                        <label for="productName">Product Name:</label>
+                        <input type="text" id="productName" name="productName" required>
+                    </div>
+                    <div>
+                        <label for="productPrice">Product Price:</label>
+                        <input type="number" id="productPrice" name="productPrice" required>
+                    </div>
+                    <div>
+                        <label for="productDescription">Product Description:</label>
+                        <textarea id="productDescription" name="productDescription" required></textarea>
+                    </div>
+                    <div>
+                        <label for="productImage">Product Image:</label>
+                        <input type="file" id="productImage" name="productImage" accept="image/*" required>
+                    </div>
+                    <button type="submit">Add Product</button>
+                </form>
+                <div id="productList">
+                    <h3>Product List</h3>
+                    <ul id="products"></ul>
+                </div>
+            `;
+            document.getElementById('addItemForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                addProduct();
+            });
+            displayProducts();
+        } else if (action === 'edit') {
+            content.innerHTML = `
+                <h2>Edit Item</h2>
+                <div id="productList">
+                    <h3>Product List</h3>
+                    <ul id="products"></ul>
+                </div>
+            `;
+            displayProducts(false, true);
+        } else if (action === 'delete') {
+            content.innerHTML = `
+                <h2>Delete Item</h2>
+                <div id="productList">
+                    <h3>Product List</h3>
+                    <ul id="products"></ul>
+                </div>
+            `;
+            displayProducts(true);
+        }
+    }
+
+    function addProduct() {
+        const productName = document.getElementById('productName').value;
+        const productPrice = document.getElementById('productPrice').value;
+        const productDescription = document.getElementById('productDescription').value;
+        const productImage = document.getElementById('productImage').files[0];
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const product = {
+                name: productName,
+                price: productPrice,
+                description: productDescription,
+                image: e.target.result || defaultImage
+            };
+            products.push(product);
+            displayProducts();
+        };
+        reader.readAsDataURL(productImage);
+
+        document.getElementById('addItemForm').reset();
+    }
+
+    function editProduct(index) {
+        const product = products[index];
+        const content = document.getElementById('content');
+        content.innerHTML = `
+            <h2>Edit Item</h2>
+            <form id="editItemForm">
+                <div>
+                    <label for="editProductName">Product Name:</label>
+                    <input type="text" id="editProductName" name="editProductName" value="${product.name}" required>
+                </div>
+                <div>
+                    <label for="editProductPrice">Product Price:</label>
+                    <input type="number" id="editProductPrice" name="editProductPrice" value="${product.price}" required>
+                </div>
+                <div>
+                    <label for="editProductDescription">Product Description:</label>
+                    <textarea id="editProductDescription" name="editProductDescription" required>${product.description}</textarea>
+                </div>
+                <div>
+                    <label for="editProductImage">Product Image:</label>
+                    <input type="file" id="editProductImage" name="editProductImage" accept="image/*">
+                </div>
+                <button type="submit">Save Changes</button>
+            </form>
+        `;
+        document.getElementById('editItemForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            saveChanges(index);
+        });
+    }
+
+    function saveChanges(index) {
+        const productName = document.getElementById('editProductName').value;
+        const productPrice = document.getElementById('editProductPrice').value;
+        const productDescription = document.getElementById('editProductDescription').value;
+        const productImage = document.getElementById('editProductImage').files[0];
+
+        if (productImage) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                products[index] = {
+                    name: productName,
+                    price: productPrice,
+                    description: productDescription,
+                    image: e.target.result || defaultImage
+                };
+                showContent('edit');
+            };
+            reader.readAsDataURL(productImage);
+        } else {
+            products[index] = {
+                name: productName,
+                price: productPrice,
+                description: productDescription,
+                image: products[index].image
+            };
+            showContent('edit');
+        }
+    }
+
+    function deleteProduct(index) {
+        products.splice(index, 1);
+        displayProducts(true);
+    }
+
+    function displayProducts(showDelete = false, showEdit = false) {
+        const productList = document.getElementById('products');
+        productList.innerHTML = '';
+
+        products.forEach((product, index) => {
+            const productItem = document.createElement('li');
+            productItem.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                <span>Name: ${product.name}, Price: ${product.price}, Description: ${product.description}</span>
+                ${showDelete ? `<button onclick="deleteProduct(${index})">Delete</button>` : ''}
+                ${showEdit ? `<button onclick="editProduct(${index})">Edit</button>` : ''}
+            `;
+            productList.appendChild(productItem);
+        });
+    }
+</script>
+
+</body>
+</html>
+

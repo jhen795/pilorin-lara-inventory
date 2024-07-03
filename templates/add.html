@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="fixed">
+        <h2>I N V E N T O R Y _ S Y S T E M</h2>
+    </div>
+
+    <div class="sidenav">
+        <a href="index.html">Home</a>
+        <a href="Sale">Sale</a>
+        <a href="Product">Product</a>
+        <a href="index.html">Log out</a>
+    </div>
+
+    <div class="center-form">
+      <form action="add_product.php" method="POST">
+          <div>
+              <label for="productID">Product ID:</label>
+              <input type="text" id="productID" name="productID" required>
+          </div>
+          <div>
+              <label for="productName">Product Name:</label>
+              <input type="text" id="productName" name="productName" required>
+          </div>
+          <div>
+              <label for="quantity">Quantity:</label>
+              <input type="number" id="quantity" name="quantity" required>
+          </div>
+          <div>
+              <label for="price">Price:</label>
+              <input type="number" id="price" name="price" required>
+          </div>
+          <div>
+              <label for="unit">Unit:</label>
+              <input type="text" id="unit" name="unit" required>
+          </div>
+          <div>
+              <button type="submit">Add Product</button>
+          </div>
+      </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='product.css') }}">
+</head>
+<body>
+    <div class="fixed">
+        <h2>I N V E N T O R Y _ S Y S T E M</h2>
+    </div>
+
+    <div class="add">
+        <a href="add.html" class="add">+Add</a>
+    </div>
+
+    <div class="list">
+        <a href="product_list.html" class="list">Product List</a>
+    </div>
+
+    <table class="center">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Unit</th>
+        </tr>
+        <tr>
+            <td>9087</td>
+            <td>iphone xr</td>
+            <td>4</td>
+            <td>300,000</td>
+            <td>ios</td>
+        </tr>
+        <tr>
+            <td>56478</td>
+            <td>Iphone 12 pro</td>
+            <td>2</td>
+            <td>122,599</td>
+            <td>IOS</td>
+        </tr>
+        <tr>
+            <td>78653</td>
+            <td>Nike Air Force 1</td>
+            <td>2</td>
+            <td>11,599</td>
+            <td>nike</td>
+        </tr>
+        <tr>
+            <td>90763</td>
+            <td>vivo y91</td>
+            <td>1</td>
+            <td>5,999</td>
+            <td>Android</td>
+        </tr>
+    </table>
+
+    <div class="center-form">
+        <form>
+            <!-- Add your form fields here -->
+        </form>
+    </div>
+
+    <div class="sidenav">
+        <a href="Sale">Sale</a>
+        <a href="Product">Product</a>
+        <button class="button is-danger"><a href="{{ url_for('login') }}">Login</a></button>
+    </div>
+</body>
+</html>
